@@ -4,44 +4,12 @@
 
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function($scope, $ionicPush) {
-        //Dummy metadata, you're going to want to change this
-        $scope.metadata = {user_id: 1};
-
-        //Simple platform check
-        $scope.curPlatform = function() {
-            if (ionic.Platform.isAndroid()) {
-                return 'android'
-            } else if (ionic.Platform.isIOS()) {
-                return 'ios'
-            }
-        }
+    .controller('AppCtrl', function($scope, $rootScope, $ionicPush) {
+        //Dummy metadata, you're going to want to change this..
+        $rootScope.metadata = {user_id: 1};
 
         //Basic registration
         $scope.pushRegister = function() {
-            //Dummy metadata
-            $ionicPush.register($scope.metadata, $scope.curPlatform());
+            $ionicPush.register($rootScope.metadata);
         }
-
-        //Notification Received
-        $scope.$on('$cordovaPush:notificationReceived', function (event, notification) {
-            if (ionic.Platform.isAndroid()) {
-                if (notification.event == "registered") {
-                    /**
-                     * Android handles push notification registration in a callback from the GCM service (whereas iOS
-                     * can be handled in a single call), so we need to check for a special notification type here.
-                     */
-                    $ionicPush.callback(notification.regid, $scope.metadata);
-                } else {
-                    /**
-                     * Handle your Android notification here
-                     */
-                }
-            }
-            else if (ionic.Platform.isIOS()) {
-                /**
-                 * Handle your iOS notification here
-                 */
-            }
-        });
     })

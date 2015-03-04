@@ -38,7 +38,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic.service.core',
                          * iOS can be handled in a single call), so we need to check for a special notification type
                          * here.
                          */
-                        $ionicPush.callback(notification.regid, $scope.metadata);
+                        $ionicPush.callback(notification.regid, $rootScope.metadata);
                     } else {
                         /**
                          * Handle your Android notification here
