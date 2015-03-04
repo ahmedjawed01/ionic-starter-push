@@ -22,29 +22,22 @@ angular.module('ionic.service.push', ['ngCordova', 'ionic.service.core'])
                 $log.error('PUSH: Unable to initialize, you must call $ionicAppProvider.identify() first');
             }
 
-            function init(metadata, platform) {
+            function init(metadata) {
                 var gcmKey = $ionicApp.getGcmId();
-                var config;
                 var api = $ionicApp.getValue('push_api_server');
 
-                if(platform === 'android') {
-                    //Default configuration for Android
-                    config = {
-                        "senderID": gcmKey
-                    };
-                } else if (platform === 'ios') {
-                    //Default configuration for iOS
-                    config = {
-                        "badge": true,
-                        "sound": true,
-                        "alert": true
-                    };
-                }
+                //Default configuration
+                var config = {
+                    "senderID": gcmKey,
+                    "badge": true,
+                    "sound": true,
+                    "alert": true
+                };
 
                 $cordovaPush.register(config).then(function(token) {
-                    if (platform === 'ios') {
-                        $log.debug('Device token: ' + token);
+                    $log.debug('Device token: ' + token);
 
+                    if (token !== 'OK') {
                         // Success -- send deviceToken to server, and store
                         var req = {
                             method: 'POST',
@@ -59,7 +52,6 @@ angular.module('ionic.service.push', ['ngCordova', 'ionic.service.core'])
                             }
                         };
 
-
                         $http(req)
                             .success(function (data, status) {
                                 alert("Success: " + data);
@@ -72,7 +64,6 @@ angular.module('ionic.service.push', ['ngCordova', 'ionic.service.core'])
             }
 
             function androidInit(token, metadata) {
-                $log.debug('Device token: ' + token);
                 var api = $ionicApp.getValue('push_api_server');
                 var req = {
                     method: 'POST',
@@ -82,23 +73,23 @@ angular.module('ionic.service.push', ['ngCordova', 'ionic.service.core'])
                         'X-Ionic-API-Key': $ionicApp.getApiKey()
                     },
                     data: {
-                        android_token: token,
+                        ios_token: token,
                         metadata: metadata
                     }
                 };
 
                 $http(req)
                     .success(function(data, status) {
-                        alert("Success: " + data + " " + status);
+                        alert("Success: " + data);
                     })
                     .error(function(error, status, headers, config) {
-                        alert("Error: " + error + " " + status);
+                        alert("Error: " + error + " " + status + " " + headers);
                     });
             }
 
             return {
-                register: function(metadata, platform){
-                    app && init(metadata, platform);
+                register: function(metadata){
+                    app && init(metadata);
                 },
                 callback: function(token, metadata){
                     app && androidInit(token, metadata);
