@@ -22,17 +22,17 @@ angular.module('ionic.service.push', ['ngCordova', 'ionic.service.core'])
                 $log.error('PUSH: Unable to initialize, you must call $ionicAppProvider.identify() first');
             }
 
-            function init(metadata) {
+            function init(metadata, platform) {
                 var gcmKey = $ionicApp.getGcmKey();
                 var config;
                 var api = $ionicApp.getValue('push_api_server');
 
-                if(gcmKey !== 'None') {
+                if(platform === 'android') {
                     //Default configuration for Android
                     config = {
                         "senderID": gcmKey
                     };
-                } else {
+                } else if (platform === 'ios') {
                     //Default configuration for iOS
                     config = {
                         "badge": true,

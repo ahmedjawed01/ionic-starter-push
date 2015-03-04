@@ -8,10 +8,19 @@ angular.module('starter.controllers', [])
         //Dummy metadata, you're going to want to change this
         $scope.metadata = {user_id: 1};
 
+        //Simple platform check
+        $scope.curPlatform = function() {
+            if (ionic.Platform.isAndroid()) {
+                return 'android'
+            } else if (ionic.Platform.isIOS()) {
+                return 'ios'
+            }
+        }
+
         //Basic registration
         $scope.pushRegister = function() {
             //Dummy metadata
-            $ionicPush.register($scope.metadata);
+            $ionicPush.register($scope.metadata, $scope.curPlatform());
         }
 
         //Notification Received
