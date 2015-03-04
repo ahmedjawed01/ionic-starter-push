@@ -27,6 +27,10 @@ angular.module('starter.controllers', [])
         $scope.$on('$cordovaPush:notificationReceived', function (event, notification) {
             if (ionic.Platform.isAndroid()) {
                 if (notification.event == "registered") {
+                    /**
+                     * Android handles push notification registration in a callback from the GCM service (whereas iOS
+                     * can be handled in a single call), so we need to check for a special notification type here.
+                     */
                     $ionicPush.callback(notification.regid, $scope.metadata);
                 } else {
                     /**

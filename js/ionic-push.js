@@ -23,7 +23,7 @@ angular.module('ionic.service.push', ['ngCordova', 'ionic.service.core'])
             }
 
             function init(metadata, platform) {
-                var gcmKey = $ionicApp.getGcmKey();
+                var gcmKey = $ionicApp.getGcmId();
                 var config;
                 var api = $ionicApp.getValue('push_api_server');
 
@@ -42,33 +42,37 @@ angular.module('ionic.service.push', ['ngCordova', 'ionic.service.core'])
                 }
 
                 $cordovaPush.register(config).then(function(token) {
-                    $log.debug('Device token: ' + token);
+                    if (platform === 'ios') {
+                        $log.debug('Device token: ' + token);
 
-                    // Success -- send deviceToken to server, and store
-                    var req = {
-                        method: 'POST',
-                        url: api + "/api/v1/register-device-token",
-                        headers: {
-                            'X-Ionic-Application-Id': $ionicApp.getId(),
-                            'X-Ionic-API-Key': $ionicApp.getApiKey()
-                        },
-                        data: {
-                            ios_token: token,
-                            metadata: metadata
-                        }
-                    };
+                        // Success -- send deviceToken to server, and store
+                        var req = {
+                            method: 'POST',
+                            url: api + "/api/v1/register-device-token",
+                            headers: {
+                                'X-Ionic-Application-Id': $ionicApp.getId(),
+                                'X-Ionic-API-Key': $ionicApp.getApiKey()
+                            },
+                            data: {
+                                ios_token: token,
+                                metadata: metadata
+                            }
+                        };
 
-                    $http(req)
-                        .success(function(data, status) {
-                            alert("Success: " + data);
-                        })
-                        .error(function(error, status, headers, config) {
-                            alert("Error: " + error + " " + status + " " + headers);
-                        });
+
+                        $http(req)
+                            .success(function (data, status) {
+                                alert("Success: " + data);
+                            })
+                            .error(function (error, status, headers, config) {
+                                alert("Error: " + error + " " + status + " " + headers);
+                            });
+                    }
                 });
             }
 
             function androidInit(token, metadata) {
+                $log.debug('Device token: ' + token);
                 var api = $ionicApp.getValue('push_api_server');
                 var req = {
                     method: 'POST',
@@ -78,23 +82,23 @@ angular.module('ionic.service.push', ['ngCordova', 'ionic.service.core'])
                         'X-Ionic-API-Key': $ionicApp.getApiKey()
                     },
                     data: {
-                        ios_token: token,
+                        android_token: token,
                         metadata: metadata
                     }
                 };
 
                 $http(req)
                     .success(function(data, status) {
-                        alert("Success: " + data);
+                        alert("Success: " + data + " " + status);
                     })
                     .error(function(error, status, headers, config) {
-                        alert("Error: " + error + " " + status + " " + headers);
+                        alert("Error: " + error + " " + status);
                     });
             }
 
             return {
-                register: function(metadata){
-                    app && init(metadata);
+                register: function(metadata, platform){
+                    app && init(metadata, platform);
                 },
                 callback: function(token, metadata){
                     app && androidInit(token, metadata);
