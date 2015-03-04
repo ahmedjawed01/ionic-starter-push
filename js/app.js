@@ -9,16 +9,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic.service.core',
         // Identify app
         $ionicAppProvider.identify({
             // Your App ID
-            app_id: 'YOUR_APP_ID',
+            app_id: '910e702a',
             // The public API key services will use for this app
-            api_key: 'YOUR_PUBLIC_API_KEY',
+            api_key: '96427b01d3a97e5f256cd3226d265e7884d33efd6e268385',
             // Your GCM sender ID/project number (Uncomment if supporting Android)
-            //gcm_id: 'YOUR_GCM_PROJECT_NUMBER'
+            gcm_id: '312001788208'
         });
 
     }])
 
-    .run(function($ionicPlatform) {
+    .run(function($ionicPlatform, $rootScope, $ionicPush, $cordovaPush) {
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -28,6 +28,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic.service.core',
             if(window.StatusBar) {
                 StatusBar.styleDefault();
             }
+
+            //Handle new push notifications as they arrive, register android devices if necessary
+            $rootScope.$on('$cordovaPush:notificationReceived', function (event, notification) {
+                if (ionic.Platform.isAndroid()) {
+                    if (notification.event == "registered") {
+                        /**
+                         * Android handles push notification registration in a callback from the GCM service (whereas
+                         * iOS can be handled in a single call), so we need to check for a special notification type
+                         * here.
+                         */
+                        $ionicPush.callback(notification.regid, $scope.metadata);
+                    } else {
+                        /**
+                         * Handle your Android notification here
+                         */
+                    }
+                }
+                else if (ionic.Platform.isIOS()) {
+                    /**
+                     * Handle your iOS notification here
+                     */
+                }
+            });
         });
     })
 
