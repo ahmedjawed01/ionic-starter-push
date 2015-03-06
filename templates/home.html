@@ -1,12 +1,34 @@
 <ion-view view-title="Home">
-    <ion-content class="padding">
-        <div class="card">
-            <div class="item item-divider">Registration</div>
-            <div class="item item-body">
-                <button class="button button-block button-positive" ng-click="pushRegister()">
-                    Register for Push
-                </button>
-            </div>
+  <ion-content class="padding">
+    <div ng-if="lastNotification" class="card">
+      <div class="item item-divider">Last push</div>
+        <div class="item item-body">
+          {{lastNotification}}
         </div>
-    </ion-content>
+      </div>
+    </div>
+    <div class="card">
+      <div class="item item-divider">Registration</div>
+      <div class="item item-body">
+        <button class="button button-block button-positive" ng-click="pushRegister()">
+          Register for Push
+        </button>
+        <p ng-if="token">
+        Device token:<br>
+        <b><code>{{token}}</code></b>
+        </p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="item item-divider">Identify User</div>
+      <div class="item item-body">
+        <button class="button button-block button-positive" ng-click="identifyUser()">
+          Identify
+        </button>
+        <p ng-if="identified">
+        </p>
+      </div>
+    </div>
+  </ion-content>
 </ion-view>
+

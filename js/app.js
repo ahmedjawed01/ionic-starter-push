@@ -5,69 +5,47 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic', 'starter.controllers', 'ionic.service.core', 'ionic.service.push'])
 
-    .config(['$ionicAppProvider', function($ionicAppProvider) {
-        // Identify app
-        $ionicAppProvider.identify({
-            // Your App ID
-            app_id: 'YOUR_APP_ID',
-            // The public API key services will use for this app
-            api_key: 'YOUR_PUBLIC_API_KEY',
-            // Your GCM sender ID/project number (Uncomment if supporting Android)
-            //gcm_id: 'YOUR_GCM_ID'
-        });
+.config(['$ionicAppProvider', function($ionicAppProvider) {
+  // Identify app
+  $ionicAppProvider.identify({
+    // Your App ID
+    app_id: 'a599cf49',
+    // The public API key services will use for this app
+    api_key: '4a4c7539df68f52e21d71204d127df619b90c6cb9569cbf2',
+    // Your GCM sender ID/project number (Uncomment if supporting Android)
+    //gcm_id: 'YOUR_GCM_ID'
+  });
 
-    }])
+}])
 
-    .run(function($ionicPlatform, $rootScope, $ionicPush, $cordovaPush) {
-        $ionicPlatform.ready(function() {
-            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-            // for form inputs)
-            if(window.cordova && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-            }
-            if(window.StatusBar) {
-                StatusBar.styleDefault();
-            }
+.run(function($ionicPlatform, $rootScope, $ionicPush, $cordovaPush) {
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    }
+    if(window.StatusBar) {
+      StatusBar.styleDefault();
+    }
+  });
+})
 
-            //Handle new push notifications as they arrive, register android devices if necessary
-            $rootScope.$on('$cordovaPush:notificationReceived', function (event, notification) {
-                if (ionic.Platform.isAndroid()) {
-                    if (notification.event == "registered") {
-                        /**
-                         * Android handles push notification registration in a callback from the GCM service (whereas
-                         * iOS can be handled in a single call), so we need to check for a special notification type
-                         * here.
-                         */
-                        $ionicPush.callback(notification.regid, $rootScope.metadata);
-                    } else {
-                        /**
-                         * Handle your Android notification here
-                         */
-                    }
-                }
-                else if (ionic.Platform.isIOS()) {
-                    /**
-                     * Handle your iOS notification here
-                     */
-                }
-            });
-        });
-    })
+.config(function($stateProvider, $urlRouterProvider) {
 
-    .config(function($stateProvider, $urlRouterProvider) {
-
-        // Ionic uses AngularUI Router which uses the concept of states
-        // Learn more here: https://github.com/angular-ui/ui-router
-        // Set up the various states which the app can be in.
-        // Each state's controller can be found in controllers.js
-        $stateProvider
-            .state('home', {
-                url: "/home",
-                templateUrl: "templates/home.html",
-                controller: 'AppCtrl'
-            });
-
-        // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/home');
-
+  // Ionic uses AngularUI Router which uses the concept of states
+  // Learn more here: https://github.com/angular-ui/ui-router
+  // Set up the various states which the app can be in.
+  // Each state's controller can be found in controllers.js
+  $stateProvider
+    .state('home', {
+      url: "/home",
+      templateUrl: "templates/home.html",
+      controller: 'AppCtrl'
     });
+
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/home');
+
+});
+
