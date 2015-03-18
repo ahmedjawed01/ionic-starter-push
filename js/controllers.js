@@ -1,6 +1,9 @@
 angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $rootScope, $ionicPush, $ionicUser) {
+  $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
+    console.log('Got token', data.token, data.platform);
+  });
   //Basic registration
   $scope.pushRegister = function() {
     alert('Registering...');
