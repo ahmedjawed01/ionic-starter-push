@@ -8,6 +8,16 @@
       </div>
     </div>
     <div class="card">
+      <div class="item item-divider">Identify User</div>
+      <div class="item item-body">
+        <button class="button button-block button-positive" ng-click="identifyUser()">
+          Identify
+        </button>
+        <p ng-if="identified">
+        </p>
+      </div>
+    </div>
+    <div class="card">
       <div class="item item-divider">Registration</div>
       <div class="item item-body">
         <button class="button button-block button-positive" ng-click="pushRegister()">
@@ -16,16 +26,6 @@
         <p ng-if="token">
         Device token:<br>
         <b><code>{{token}}</code></b>
-        </p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="item item-divider">Identify User</div>
-      <div class="item item-body">
-        <button class="button button-block button-positive" ng-click="identifyUser()">
-          Identify
-        </button>
-        <p ng-if="identified">
         </p>
       </div>
     </div>
