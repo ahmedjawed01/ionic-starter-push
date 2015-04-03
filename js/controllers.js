@@ -14,13 +14,6 @@ angular.module('starter.controllers', [])
         // Called for each notification for custom handling
         $scope.lastNotification = JSON.stringify(notification);
       }
-    },
-    
-    // Some metadata to send through the webhook for your own
-    // linking of device token and user
-    {
-      "user_id": 0,
-      "email": "tester@example.com"
     }).then(function(deviceToken) {
       $scope.token = deviceToken;
     });
@@ -28,11 +21,22 @@ angular.module('starter.controllers', [])
   $scope.identifyUser = function() {
     alert('Identifying');
     console.log('Identifying user');
-    $ionicUser.identify({
-      user_id: '0',
-      name: 'Test User',
-      message: 'I come from planet Ion'
-    });
+
+    var existingUser = $ionicUser.get();
+    if(!existingUser) {
+      existingUser = {
+        user_id: $ionicUser.generateGUID(), // Use the user_id from your database if you have it
+        name: 'Test User',
+        message: 'I come from planet Ion'
+      }
+    } else {
+      // Update if we have new fields or anything,
+      // but don't generate 
+      // existingUser.amount_purchased = 100
+    }
+
+    $ionicUser.identify(existingUser);
+    
   }
 })
 
