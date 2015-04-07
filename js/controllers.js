@@ -22,20 +22,18 @@ angular.module('starter.controllers', [])
     alert('Identifying');
     console.log('Identifying user');
 
-    var existingUser = $ionicUser.get();
-    if(!existingUser) {
-      existingUser = {
-        user_id: $ionicUser.generateGUID(), // Use the user_id from your database if you have it
-        name: 'Test User',
-        message: 'I come from planet Ion'
-      }
-    } else {
-      // Update if we have new fields or anything,
-      // but don't generate 
-      // existingUser.amount_purchased = 100
-    }
+    var user = $ionicUser.get();
+    if(!user.user_id) {
+      // Set your user_id here, or generate a random one
+      user.user_id = $ionicUser.generateGUID()
+    };
 
-    $ionicUser.identify(existingUser);
+    angular.extend(user, {
+      name: 'Test User',
+      message: 'I come from planet Ion'
+    });
+
+    $ionicUser.identify(user);
     
   }
 })
