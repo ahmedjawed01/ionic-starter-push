@@ -1,6 +1,8 @@
 # ionic-starter-push
 A starter application with push notification functionality. 
 
+**Note:** There's a newer, better guide to getting started with Ionic Push [here](http://docs.ionic.io/v1.0/docs/push-from-scratch)
+
 ## Installation
 Just run:
 
